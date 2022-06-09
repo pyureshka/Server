@@ -1,5 +1,7 @@
 package ru.bgpu.server;
 
+import java.net.InetAddress;
+
 public class ServerInfo {
     public int port;
     public String host;
