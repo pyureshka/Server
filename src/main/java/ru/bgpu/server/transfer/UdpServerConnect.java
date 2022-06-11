@@ -1,6 +1,7 @@
-package ru.bgpu.server;
+package ru.bgpu.server.transfer;
 
 import com.google.gson.Gson;
+import ru.bgpu.server.dto.ServerInfo;
 
 import java.io.IOException;
 import java.net.*;
@@ -14,6 +15,7 @@ public class UdpServerConnect extends Thread{
     private boolean running;
     private InetAddress addressCliSoc;
     private int portCliSoc;
+    private Gson gson;
 
 
     private int tcpPort = 0;
@@ -50,7 +52,7 @@ public class UdpServerConnect extends Thread{
             );
             mcServerSocket.receive(reqv);
 
-            String stringReqv = new String(reqv.getData());
+            String stringReqv = new String(reqv.getData()).trim();
             System.out.println("receive: " + stringReqv);
 
             this.sendInfoToClient(tcpPort, ipTcpSocket, hostName, reqv.getAddress(), reqv.getPort());

@@ -1,4 +1,4 @@
-package ru.bgpu.server;
+package ru.bgpu.server.dto;
 
 import java.net.InetAddress;
 
