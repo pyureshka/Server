@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 public class SocketWorker extends Thread {
     private Socket socket;
     private BufferedReader in;
-    private BufferedWriter bufOut;
     private OutputStream out;
     private static String FOLDER = "./files";
 
@@ -35,6 +34,7 @@ public class SocketWorker extends Thread {
                     this.sendFile(in.readLine());
                     break;
             }
+            in.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,15 +50,25 @@ public class SocketWorker extends Thread {
             System.out.println(fileNames);
             out.write(fileNames.length());
             out.write(fileNames.getBytes());
+
+            out.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 
-    public void sendFile (String fileName) throws FileNotFoundException {
+    public void sendFile (String fileName) throws IOException {
         System.out.println(fileName);
         File file = new File(new File(FOLDER),fileName);
-//        byte[] fileByteArray = new byte[(int) file.length()];
-//        FileOutputStream fout = new FileOutputStream(file);
+        byte[] b = new byte[1048576];
+
+        out = new DataOutputStream (new BufferedOutputStream (socket.getOutputStream()));
+        FileInputStream fIn = new FileInputStream(file);
+
+        fIn.read(b,0,b.length);
+        out.write(b, 0, b.length);
+
+        fIn.close();
+        out.close();
     }
 }
