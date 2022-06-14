@@ -10,7 +10,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         TcpServerConenct tcp = new TcpServerConenct();
-        UdpServerConnect udp = new UdpServerConnect(tcp.getPort(), tcp.getIpTcpSocket(), tcp.getName());
+        UdpServerConnect udp = new UdpServerConnect(tcp.getPort(), tcp.getIpTcpSocket(), tcp.getServerName());
 
         udp.start();
         tcp.start();
