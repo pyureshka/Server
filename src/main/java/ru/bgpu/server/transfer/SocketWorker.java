@@ -48,7 +48,7 @@ public class SocketWorker extends Thread {
             Gson gson = new Gson();
             String fileNames = gson.toJson(Arrays.stream(files.listFiles()).map(FileInfoDto::new).collect(Collectors.toList()));
             System.out.println(fileNames);
-            out.write(fileNames.length());
+            out.write(fileNames.getBytes().length);
             out.write(fileNames.getBytes());
 
             out.close();
@@ -60,14 +60,15 @@ public class SocketWorker extends Thread {
     public void sendFile (String fileName) throws IOException {
         System.out.println(fileName);
         File file = new File(new File(FOLDER),fileName);
-        byte[] b = new byte[1048576];
-
+        byte[] buffer = new byte[1024];
         out = new DataOutputStream (new BufferedOutputStream (socket.getOutputStream()));
         FileInputStream fIn = new FileInputStream(file);
+        int bytes = 0;
 
-        fIn.read(b,0,b.length);
-        out.write(b, 0, b.length);
-
+        while ((bytes = fIn.read(buffer)) != -1){
+            out.write(buffer, 0, bytes);
+            out.flush();
+        }
         fIn.close();
         out.close();
     }

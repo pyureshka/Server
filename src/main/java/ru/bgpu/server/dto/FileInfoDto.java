@@ -8,6 +8,6 @@ public class FileInfoDto {
 
     public FileInfoDto(File file) {
         this.name = file.getName();
-        this.size = file.length()/1024;
+        this.size = file.length();
     }
 }
